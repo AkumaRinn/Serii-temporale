@@ -1,0 +1,38 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+
+p13 = (87+81+75)/3
+p14 = (81+75+p13)/3
+# p15 = (75+p13+p14)/3
+# p16 = (p13+p14+p15)/3
+s =[1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+p = [92,85,80,87,79,82,89,83,80,87,81,75,p13,p14]
+data = {'s': s,"p":p}
+df=pd.DataFrame(data = data, index = s)
+df = df["p"].to_frame()
+
+df["MA3"]=df["p"].rolling(3).mean().shift(1)
+df["err3"] = np.power((df["p"]-df["MA3"]),2)
+
+df["MA4"]=df["p"].rolling(4).mean().shift(1)
+df["err4"] = np.power((df["p"]-df["MA4"]),2)
+
+df["MA5"]=df["p"].rolling(5).mean().shift(1)
+df["err5"] = np.power((df["p"]-df["MA5"]),2)
+
+df["MA6"]=df["p"].rolling(6).mean().shift(1)
+df["err6"] = np.power((df["p"]-df["MA6"]),2)
+
+MSE3 = df["err3"].mean()
+MSE4 = df["err4"].mean()
+MSE5 = df["err5"].mean()
+MSE6 = df["err6"].mean()
+print(f"MSE3: {MSE3},MSE4: {MSE4},MSE5: {MSE5},MSE6: {MSE6}")
+
+
+
+df[["p","MA3"]].plot(label = "pacients",
+                      figsize = (16,8))
